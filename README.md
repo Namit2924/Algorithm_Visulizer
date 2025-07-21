@@ -10,22 +10,32 @@
 
 ![Preview](preview.gif)
 
+### SORTING VISUALIZER
+
+- Bubble Sort Algorithm
+- Selection Sort Algorithm
+- Insertion Sort Algorithm
+- Merge Sort Algorithm
+- Quick Sort Algorithm
+
 ### SEARCHING VISUALIZER
 
-- Depth First Search
-- Breadth First Search
+- Linear Search Algorithm
+- Binary Search Algorithm
 
 ### PATH FINDING VISUALIZER
 
 - Dijikstra Algorithm
 - A* Algorithm
+- Breath First Search Algorithm
+- Depth First Search Algorithm
 
 ## DEVELOPMENT
 
-[![Generic badge](https://img.shields.io/badge/TYPE-STATIC-99ff66.svg)](https://github.com/sandeep-shaw10/GraphJS/blob/master/LICENSE)
+<!-- [![Generic badge](https://img.shields.io/badge/TYPE-STATIC-99ff66.svg)](https://github.com/sandeep-shaw10/GraphJS/blob/master/LICENSE)
 [![Generic badge](https://img.shields.io/badge/JavaScript-59%25-ffff00.svg)](https://github.com/sandeep-shaw10/GraphJS/blob/master/LICENSE)
 [![Generic badge](https://img.shields.io/badge/HTML-32%25-ff9922.svg)](https://github.com/sandeep-shaw10/GraphJS/blob/master/LICENSE)
-[![Generic badge](https://img.shields.io/badge/SCSS-9%25-ff1a75.svg)](https://github.com/sandeep-shaw10/GraphJS/blob/master/LICENSE)
+[![Generic badge](https://img.shields.io/badge/SCSS-9%25-ff1a75.svg)](https://github.com/sandeep-shaw10/GraphJS/blob/master/LICENSE) -->
 
 #### LANGUAGE AND DEPLOYMENT
 <div style="background:#dddddd; padding:25px ">
