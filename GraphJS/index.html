@@ -1,0 +1,413 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!--Icon Favicon-->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+    <!--Boostrap-->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-giJF6kkoqNQ00vy+HMDP7azOuL0xtbfIcaT9wjKHr8RbDVddVHyTfAAsrekwKmP1" crossorigin="anonymous">
+
+    <!--Jquery-->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+    <!-- <link rel="shortcut icon" href="sv-removebg-preview.png" type="image/x-icon"> -->
+    <!--Document Title-->
+    <title>Visualize Path</title>
+
+    <!--Custom Style-->
+    <!-- <link rel="stylesheet" href="style/dist/style.css"> -->
+
+    <style>
+        * {
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+}
+
+body {
+  background-color: #e0e0e0 !important;
+}
+
+.board {
+  width: 40vw;
+  height: 40vw;
+  background-color: #ffffff;
+  border-radius: 25px;
+  background: linear-gradient(145deg, #f0f0f0, #cacaca);
+  box-shadow: 25px 25px 50px #bebebe, -25px -25px 50px #ffffff;
+  overflow: hidden;
+}
+
+.unit {
+  background-color: #ffffff;
+  border-radius: 2px;
+  border: 0.1px outset #84abff;
+}
+.unit:hover {
+  transform: scale(1.1);
+  transition: 200ms;
+}
+
+.restore {
+  background: #ffffff;
+}
+
+.target {
+  background: #262626;
+}
+
+.wall {
+  background: #016efd;
+}
+
+.screen {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.animate {
+  animation: appear 1s;
+  background-color: #f4fd9e;
+}
+
+@keyframes appear {
+  0% {
+    opacity: 0.5;
+    transform: scale(0);
+    border-radius: 50%;
+  }
+  30% {
+    opacity: 0.75;
+    background-color: #ffeb35;
+  }
+  100% {
+    opacity: 1;
+    background-color: #00ff95;
+    transform: scale(1);
+    border-radius: 0px;
+  }
+}
+.path {
+  background: #ff9393;
+}
+
+.control {
+  width: 40vw;
+  height: 40vw;
+  border-radius: 25px;
+  background: #e0e0e0;
+  box-shadow: inset 25px 25px 50px #bebebe, inset -25px -25px 50px #ffffff;
+}
+
+.footer {
+  color: #ffffff;
+}
+
+.screen {
+  width: 38vw;
+  height: 38vw;
+  border-radius: 10px;
+}
+
+.title {
+  border-radius: 20px;
+  background: linear-gradient(145deg, #cacaca, #f0f0f0);
+  box-shadow: 11px 11px 27px #c5c5c5, -11px -11px 27px #fbfbfb;
+}
+
+.card {
+  opacity: 0.75;
+}
+.card:hover {
+  box-shadow: 5px 5px 20px #3b3b3b;
+  opacity: 1;
+  transition: 300ms;
+}
+
+.fa:hover {
+  transform: rotate(360deg);
+  transition: 1s;
+}
+
+.fa-youtube-play:hover {
+  color: #ff5555;
+}
+
+.fa-linkedin-square:hover {
+  color: #2ea9fa;
+}
+
+.fa-instagram {
+  border-radius: 10px;
+}
+.fa-instagram:hover {
+  background-image: radial-gradient(circle at 30% 107%, #fdf497 0%, #fdf497 5%, #fd5949 45%, #d6249f 60%, #285AEB 90%);
+}
+
+@media screen and (max-width: 992px) {
+  .board, .control {
+    width: 75vw;
+    height: 75vw;
+  }
+
+  .screen {
+    width: 70vw;
+    height: 70vw;
+  }
+}
+@media screen and (max-width: 520px) {
+  .control {
+    border-radius: 0px;
+    background: none;
+    box-shadow: none;
+  }
+  @media screen and (max-width: 340px) {
+    .card-grp {
+      display: none;
+    }
+  }
+}
+
+@media screen and (max-width: 400px) {
+  .card-grp {
+    margin-top: 30px;
+  }
+  .icon {
+    margin-top: 100px;
+  }
+}
+    </style>
+</head>
+
+<body>
+    <!--Navbar-->
+    <nav class="navbar navbar-dark " style="background-color: #1c2382;">
+        <div class="container-fluid">
+            <h1 class="text-light" style="margin: auto;"> Path Finding Visualization </h1>
+        </div>
+    </nav>
+
+    <!--Algorithm Name-->
+    <div class="name" style="background-color: #1c2382;">
+        <div class="container">
+            <div class="row">
+                <div class="col-12">
+                    <div class="title mt-4 text-center py-2 mx-4">
+                        <h1>Breadth First Search</h1>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!--Display-->
+    <div class="display " style="background-color: #1c2382;">
+        <div class="container pb-4">
+            <div class="row my-4">
+                <div class="col-lg-6">
+                    <div class="board my-4 mx-auto d-flex">
+                        <div class="screen bg-light m-auto ">
+
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-6">
+                    <div class="control my-4 mx-auto p-4">
+                        <h1 class="text-center mb-5"> </i> Algorithms</h1>
+                        <!--Choose Algorithm-->
+                        <div class="col-auto my-2">
+                            <div class="container">
+                                <div class="row">
+                                    <div class="col-9 my-auto">
+                                        <select class="form-select" aria-label="Default select example" id="algorithm">
+                                            <option selected value="1">BFS</option>
+                                            <option value="2">DFS</option>
+                                            <option value="3">Dijkstra</option>
+                                            <option value="4">A*</option>
+                                        </select>
+                                    </div>
+                                    <div class="col-3">
+                                        <button class="btn btn-dark" id="start">Visualize</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-auto my-4">
+                            <label for="speed" class="form-label">Speed : <span id="speed_dis"> 3 </span></label>
+                            <input type="range" class="form-range dark" min="1" max="5" step="0.5" id="speed">
+                        </div>
+
+                        <div class="col-auto my-4">
+                            <label for="size" class="form-label">Dimension : <span id="size_dis"> 22 </span></label>
+                            <input type="range" class="form-range dark" min="4" max="40" step="1" id="size">
+                        </div>
+
+
+                        <div class="container">
+                            <div class="row">
+                                <div class="col-6  text-center">
+                                    <button class="btn btn-outline-dark" id="clear">Clear</button>
+                                </div>
+                                <div class="col-6  text-center">
+                                    <button class="btn btn-dark" id="wall">Wall</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    
+    <!--Slider Card-->
+    <div class="card-grp py-5 my-5" style="background-color: #1c2382;">
+        <div class="container">
+            <h1 class="text-center" style="color: wheat;">SEARCHING ALGORITHM</h1>
+            <div class="row">
+                <div class="col-xl-3 col-md-6 col-sm-12">
+                    <div class="card my-4 mx-auto" style="width: 18rem;">
+                        <img class="card-img-top" src="assests/images/img1.webp" alt="Card image cap">
+                        <div class="card-body">
+                            <h5 class="card-title">Breadth First Search</h5>
+                            <p class="card-text">
+                                From the tree root it explores all of the neighbor nodes at the present 
+                                depth prior to moving on to the nodes at next depth level.
+                            </p>
+                            <a href="https://www.youtube.com/watch?v=aWEKe7lQxNw" class="btn btn-primary"> <i class="fa fa-angle-double-right"></i> More</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-xl-3 col-md-6 col-sm-12">
+                    <div class="card my-4 mx-auto" style="width: 18rem;">
+                        <img class="card-img-top" src="assests/images/img2.webp" alt="Card image cap">
+                        <div class="card-body">
+                            <h5 class="card-title">Depth First Search</h5>
+                            <p class="card-text">
+                                It starts at the tree root and explores as far as possible 
+                                along each branch in it's descendant before backtracking.
+                            </p>
+                            <a href="https://www.youtube.com/watch?v=pDxbtrVDwSU" class="btn btn-primary"> <i class="fa fa-angle-double-right"></i> More</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-xl-3 col-md-6 col-sm-12">
+                    <div class="card my-4 mx-auto" style="width: 18rem;">
+                        <img class="card-img-top" src="assests/images/img3.webp" alt="Card image cap" style="height: 214.43px;">
+                        <div class="card-body">
+                            <h5 class="card-title">Dijkstra Algorithm</h5>
+                            <p class="card-text">
+                                For a given source node in the graph, 
+                                the algorithm finds the shortest path between that node and every other.
+                            </p>
+                            <a href="https://www.youtube.com/watch?v=GazC3A4OQTE&t=358s" class="btn btn-primary"> <i class="fa fa-angle-double-right"></i> More</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-xl-3 col-md-6 col-sm-12">
+                    <div class="card my-4 mx-auto" style="width: 18rem;">
+                        <img class="card-img-top" src="assests/images/img5.webp" alt="Card image cap" style="height: 214.43px;">
+                        <div class="card-body">
+                            <h5 class="card-title">A* Algorithm</h5>
+                            <p class="card-text">
+                                It is an informed search algorithm, as it uses information about path cost 
+                                and also uses heuristics to find the solution.
+                            </p>
+                            <a href="https://www.youtube.com/watch?v=ySN5Wnu88nE" class="btn btn-primary"> <i class="fa fa-angle-double-right"></i> More</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+     
+    <!--Icon-->
+    <div class="icon py-5 my-5" style="background-color: #1c2382;">
+        <div class="container text-center">
+            <h1 class="text-center" style="color: white;">FEATURES</h1>
+            <div class="row">
+                <div class="col-lg-4 col-md-12">
+                    <div class="icon-show my-4">
+                        <img class="img-fluid " src="https://www.svgrepo.com/show/27891/location.svg" alt="icon"
+                            width="250px">
+                        <h4 class="my-2">Shortest Path Visualizer</h4>
+                        <span class="badge rounded-pill bg-dark">Dijkstra Algorithm</span>
+                        <span class="badge rounded-pill bg-dark">A* Algorithm</span>
+                    </div>
+                </div>
+
+                <div class="col-lg-4 col-md-12">
+                    <div class="icon-show my-4">
+                        <img class="img-fluid" src="https://www.svgrepo.com/show/1089/graph.svg" alt="icon"
+                            width="250px">
+                        <h4 class="my-2">Searching Visualizer</h4>
+                        <span class="badge rounded-pill bg-danger">Breadth First Search</span>
+                        <span class="badge rounded-pill bg-danger">Depth First Search</span>
+                    </div>
+                </div>
+                <div class="col-lg-4 col-md-12">
+                    <div class="icon-show my-4">
+                        <img class="img-fluid" src="https://www.svgrepo.com/show/227055/maze.svg" alt="icon"
+                            width="250px">
+                        <h4 class="my-2">Maze Visualization</h4>
+                        <span class="badge rounded-pill bg-success">Uniform Weighted Path</span>
+                        <span class="badge rounded-pill bg-success">4 Neighbours</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!--Footer-->
+    <!-- <div class="footer bg-dark py-4 px-2">
+        <div class="container">
+            <div class="row text-center">
+                <div class="col-12 ">
+                    <h3>Path Visualizer 2021</h3>
+                </div>
+                <div class="col-12 mt-2">
+                    <i class="mx-2 fa fa-2x fa-instagram "></i>
+                    <i class="mx-2 fa fa-2x fa-youtube-play"></i>
+                    <i class="mx-2 fa fa-2x fa-linkedin-square"></i>
+                    <i class="mx-2 fa fa-2x fa-github"></i>
+                </div>
+                <div class="col-12 mt-2">
+                    <small>&copy; Sandeep Shaw </small>
+                </div>
+            </div>
+        </div>
+    </div> -->
+
+
+
+
+    <!--Popper Jquery Dependency-->
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"
+        integrity="sha384-q2kxQ16AaE6UbzuKqyBE9/u/KzioAlnx2maXQHiDX9d4/zp8Ok3f+M7DPm+Ib6IU"
+        crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/js/bootstrap.min.js"
+        integrity="sha384-pQQkAEnwaBkjpqZ8RU1fF1AKtTcHJwFl3pblpTlHXybJjHpMYo79HY3hIi4NKxyj"
+        crossorigin="anonymous"></script>
+
+   <!-- <script src="script/script.js"></script> -->
+   <script type="module" src="script/astar.js"></script>
+<script  type="module" src="script/bfs.js"></script>
+<script   type="module" src="script/dfs.js"></script>
+<script  type="module" src="script/dijkstra.js"></script>
+<script  type="module" src="script/script.js"></script>
+
+  
+
+    
+
+
+</body>
+
+</html>
